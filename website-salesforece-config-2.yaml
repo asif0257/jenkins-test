@@ -1,0 +1,75 @@
+swagger: '2.0'
+info:
+  title: Prophet Homes Salesforce Query API
+  description: Staging Gateway for Lead Creation and Duplicate Validation in Salesforce
+  version: 2.0.0
+schemes:
+  - https
+produces:
+  - application/json
+paths:
+  /oauth2/token:
+    post:
+      summary: Generate Salesforce Access Token
+      operationId: generateToken
+      consumes:
+        - application/x-www-form-urlencoded
+      parameters:
+        - name: grant_type
+          in: formData
+          type: string
+          required: true
+          default: "client_credentials"
+        - name: client_id
+          in: formData
+          type: string
+          required: true
+        - name: client_secret
+          in: formData
+          type: string
+          required: true
+      x-google-backend:
+        address: https://prophethomes--partial.sandbox.my.salesforce.com/services/oauth2/token
+        path_translation: CONSTANT_ADDRESS
+      responses:
+        '200':
+          description: Token generated successfully
+        '401':
+          description: Invalid Client Credentials
+  /query:
+    get:
+      summary: Duplicate Lead Check
+      consumes:
+      - application/json
+      operationId: Duplicate Lead Check
+      x-google-backend:
+        address:  https://prophethomes--partial.sandbox.my.salesforce.com/services/data/v65.0/query
+      responses:
+        '200':
+          description: Successful response
+          schema:
+            type: string
+        '401':
+          description: Salesforce Token Expired or Invalid
+          schema:
+            type: string
+            
+      security:
+        - salesforce_auth: []
+        
+      parameters:
+        - name: "q"
+          in: "query"
+          description: "The SOQL query string"
+          required: true
+          type: "string"
+          
+securityDefinitions:
+  salesforce_auth:
+    authorizationUrl: "https://prophethomes--partial.sandbox.my.salesforce.com/services/oauth2/authorize"
+    flow: "implicit"
+    type: "oauth2"
+    x-google-issuer: "https://prophethomes--partial.sandbox.my.salesforce.com"
+    x-google-jwks_uri: "https://prophethomes--partial.sandbox.my.salesforce.com/id/keys"
+    x-google-audiences: "https://prophethomes--partial.sandbox.my.salesforce.com/"
+    
