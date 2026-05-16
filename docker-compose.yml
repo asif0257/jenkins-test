@@ -1,0 +1,10 @@
+services:
+  sample-app:
+    image: asia-south1-docker.pkg.dev/YOUR_PROJECT_ID/sample-repo/sample-app:latest
+    container_name: sample-app
+    ports:
+      - "5000:5000"
+    environment:
+      - APP_ENV=production
+      - BUILD_NUMBER=${BUILD_NUMBER:-1}
+    restart: unless-stopped
