@@ -6,7 +6,7 @@ app = Flask(__name__)
 @app.route('/')
 def home():
     return jsonify({
-        "message": "Hello from Jenkins + GCP + ansible CI/CD pipeline!",
+        "message": "Hello from Jenkins + GCP + ansible + test branch CI/CD pipeline!",
         "environment": os.getenv("APP_ENV", "production"),
         "version": os.getenv("BUILD_NUMBER", "1")
     })
