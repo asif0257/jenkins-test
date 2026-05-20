@@ -1,6 +1,6 @@
 services:
   sample-app:
-    image: asia-south1-docker.pkg.dev/gke-arena/asif-repo/sample-app:latest
+    image: asia-south1-docker.pkg.dev/gke-arena/asif-repo/sample-app:${BUILD_NUMBER}
     container_name: sample-app
     ports:
       - "5000:5000"
